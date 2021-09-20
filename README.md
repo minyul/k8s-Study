@@ -187,6 +187,97 @@ Api server는 특정 노드에 할당하는데 실행되기 전이다! 라고 et
 그래서 계속 Controller Kubelete Api Server Etcd 는 계속~~~~ 실행되고있어 항상 체크하면서 업데이트하고!
 
 
+# 쿠버네티스 아키텍처 - 2 ( 오브젝트 )
+
+Pod : 가장 작은 배포 단위 - Container를 배포하는 것이 아니라 Pod를 배포함
+그리고 고유 IP를 갖고있따.
+
+여러개의 컨테이너가 하나의 Pod에 속할 수 있어. 보통은 1개의 Container가 존재하지!
+이 여러개 컨테이너가 하나의 Pod에서 자원을 공유할수도있어 
+
+ReplicaSet : 여러개의 Pod를 관리! 
+만약 이걸 3 -> 4 로 바꾸면 이걸 ReplicaSet이 하나의 Pod를 생성해줌! 삭제도 가능
+
+Deployment 버전 1 , 버전 2로 무중단 배포를 해야할때 Replicas 를 이용한다! 
+내부적인 무언가 없고 Depolyment는 Replicaset을 이용해서 무중단 배포를 한다!
+
+Service - ClusterIp : 클러스터 내부에서 사용하는 프록시 
+Pod는 동적이지만 서비스는 고유 IP를 가짐
+Pod는 죽고 새로 생성되고 하는데! 만약 여기서 IP를 없어지거나할텐데 그러면 .. 문제가생겨
+그래서 Pod가 줄던 IP가 바뀌던 생서되던 앞에 Service가 있음 !!
+
+![image](https://user-images.githubusercontent.com/86240112/134001436-cec092db-9ba8-42d1-af46-dbd6c92187e7.png)
+
+근데 여기서 조금 의아한건 Cluster Ip는 내부에서만 접근가능하다! 그래서 nodePort가 있따!
+
+
+![image](https://user-images.githubusercontent.com/86240112/134001820-0138f282-b0ef-4078-b07e-65b54eea8e69.png)
+
+즉슨, Node1, 2 든 아무대나 보내도 알아서 찾아간다! 
+근데 여기서 문제는.. 1번 노드가 만약 죽으면 어떻게 될까 !?
+
+2번 노드로 붙어야하는데.. NodePort는 어떻게 ... 움??
+
+그래서 여기서 또!! Service (LoadBalancer ) 가 생겼다!
+
+
+![image](https://user-images.githubusercontent.com/86240112/134002083-349435c6-6e01-4c3e-a2c7-42200ff626a2.png)
+
+Ingress ! 그 또 LoadBalnacer를 여러개 만들다기보다 또 앞단에 한개 따악! 도메인 또는 경로별 라우팅!
+즉슨 Delpoyment를 생성하고 그러면 ReplicaSet이 자동으로 생성하고 이게 Pod를 생성하는거지!
+
+또 이걸 외부에 노출해야하니까 Service(ClusterIp)가 생긴거지 그리고 NodePort! 그리고 LoadBalancer ! 
+그리고 마지막으로 Ingress !!
+
+그 외 기본 오브젝트 : Volume : EBS, NFS와 같은 Storage도 있고.. ConfigMap - 설정 !
+
+
+# API 호출! 
+
+Pod이라는 오브젝트가 있었고 이제 이걸 띄우고싶다 하면! 
+yml 에 key value를 사용해서 표현을 한다
+
+```java
+apiVersion : 1
+kind: Pod
+metadata:
+  name: example
+spec:
+  containers:     # 컨테이너가 여러개니까!
+  - name: busybox
+    image : busybox :1.25
+```
+api 가 이 명세를 보고 etcd에 넣으면 이제 각 오브젝트(스케줄러, 컨트롤 등등) 이 실행이되기 시작한다!
+
+ArgoCd (Custom Resource) 
+
+
+중요!!!!!       (조립된 사진)      (레고 자원) (설명서)        (조립)
+API 호출하기 -> 원하는 상태를 다양한 오브젝트로 정의 하고 API 서버에 yaml 형식으로 전달!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
