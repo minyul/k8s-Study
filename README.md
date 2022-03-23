@@ -180,16 +180,17 @@ kubectl get po -n monitroting
 현재상태 == 원하는 상태  : Current State == Desired State
 만약 다르면 조치를 해줘야한다! 
 
+Disired State : 쿠버네티스느 이러한 루프를 계속 돈다.
 상태체크 (Observe) -> 차이점발견 (Diff) -> 조치 (Act)
 이러한 Loop 를 계속 돈다.!!
 
 
-음 또 요청이들어왔다. 음... 새 컨테이너는 어디에 배포하지 ?
+음 또 요청이들어왔다. 음... 새 컨테이너는 어디에(1번서버 또는 2번서버) 어디에!! 배포하지 ?
 근데 이렇게 매일 어디에 배포하는지 확인하고 하는게 귀찮을 수 있다!
 
 그래서 Scheduler 를 뽑을 수 있어!! ( 두번째 서버에 넣으면될것같은데!? 라는 생각)
 또 컨테이너 상태를 체크할 사람을 뽑자! Controller를 뽑자!!
-또 여러가지 부가적인것도 확인하는 것을 뽑을 사람이 필요해! 뽑아!!
+또 여러가지 부가적인것도 확인하는 것을 뽑을 사람이 필요해! 뽑아!!그게 전부 다 컨트롤러 입니다.
 
 
 Desired State : Replication Controller , Endpoint Controller, Namespace Controller 등등 
@@ -313,6 +314,9 @@ ArgoCd (Custom Resource)
 중요!!!!!       (조립된 사진)      (레고 자원) (설명서)        (조립)
 API 호출하기 -> 원하는 상태를 다양한 오브젝트로 정의 하고 API 서버에 yaml 형식으로 전달!
 
+# 돼지용
+
+컨트롤러 플레인이 곧 마스터 == 마스터 노드이다. 컨트롤러 플레인에는 api server, 스케줄러, 컨트롤러 매니저, etcd가 있다. 
 
 
 
