@@ -323,7 +323,10 @@ API 호출하기 -> 원하는 상태를 다양한 오브젝트로 정의 하고 
 
 
 
+참고할 만한 자료 :
 
+https://ikcoo.tistory.com/147
+https://brunch.co.kr/@topasvga/1814
 
 
 
